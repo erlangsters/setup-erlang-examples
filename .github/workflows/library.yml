@@ -1,0 +1,24 @@
+name: Erlang Library
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source files.
+      uses: actions/checkout@v4
+
+    - name: Set up Erlang
+      uses: erlangsters/setup-erlang@v1
+      with:
+        otp-version: 27
+
+    - name: Build project
+      run: |
+        cd my-lib-project/with-rebar3
+        rebar3 compile
