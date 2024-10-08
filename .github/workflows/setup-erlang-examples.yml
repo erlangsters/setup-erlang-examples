@@ -1,0 +1,34 @@
+name: Setup Erlang Examples
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  otp-release-rebar3:
+    strategy:
+      matrix:
+        platforms: [ubuntu, macos, windows]
+        version: [25, 26, 27]
+    runs-on: ${{ matrix.platforms }}-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: erlangsters/setup-erlang@v1
+      with:
+        erlang-version: ${{ matrix.version }}
+        install-rebar3: true
+    - run: cd otp-release-rebar3 && rebar3 as prod release
+
+  otp-release-erlang-mk:
+    strategy:
+      matrix:
+        platforms: [ubuntu, macos, windows]
+        version: [25, 26, 27]
+    runs-on: ${{ matrix.platforms }}-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: erlangsters/setup-erlang@v1
+      with:
+        erlang-version: ${{ matrix.version }}
+    - run: cd otp-release-erlang-mk && make rel
