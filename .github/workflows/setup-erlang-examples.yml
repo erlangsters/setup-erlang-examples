@@ -82,7 +82,5 @@ jobs:
 
     - shell: msys2 {0}
       run: |
-        ls ${{ steps.setup-erlang.outputs.erlang-location }}
-        ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
         cd nif-library-erlang-mk
         make
