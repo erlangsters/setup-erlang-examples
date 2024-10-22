@@ -68,40 +68,21 @@ jobs:
 
     - uses: msys2/setup-msys2@v2
       with:
+        msystem: MINGW64
         update: false
         install: >-
           git
           make
           mingw-w64-x86_64-gcc
+        path-type: inherit
 
     - run: |
         ls ${{ steps.setup-erlang.outputs.erlang-location }}
         ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
+
     - shell: msys2 {0}
       run: |
         ls ${{ steps.setup-erlang.outputs.erlang-location }}
         ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
-
-    # - uses: msys2/setup-msys2@v2
-    #   with:
-    #     update: true
-    #     install: >-
-    #       git
-    #       make
-    #       mingw-w64-x86_64-gcc
-    # - shell: msys2 {0}
-    #   run: |
-    #     echo $PATH
-    # - uses: erlangsters/setup-erlang@v1.0.1
-    #   id: setup-erlang
-    #   with:
-    #     erlang-version: ${{ matrix.version }}
-    # - shell: msys2 {0}
-    #   run: |
-    #     ls ${{ steps.setup-erlang.outputs.erlang-location }}
-    #     ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
-    #     cd nif-library-erlang-mk
-    #     make
-    #     make eunit
-    #   env:
-    #     PATH: ${{ steps.setup-erlang.outputs.erlang-location }}/bin:$PATH
+        cd nif-library-erlang-mk
+        make
