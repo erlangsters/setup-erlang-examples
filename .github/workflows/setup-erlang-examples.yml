@@ -66,6 +66,22 @@ jobs:
         ls ${{ steps.setup-erlang.outputs.erlang-location }}
         ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
 
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: false
+        install: >-
+          git
+          make
+          mingw-w64-x86_64-gcc
+
+    - run: |
+        ls ${{ steps.setup-erlang.outputs.erlang-location }}
+        ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
+    - shell: msys2 {0}
+      run: |
+        ls ${{ steps.setup-erlang.outputs.erlang-location }}
+        ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
+
     # - uses: msys2/setup-msys2@v2
     #   with:
     #     update: true
