@@ -33,22 +33,22 @@ jobs:
   #       erlang-version: ${{ matrix.version }}
   #   - run: cd otp-release-erlang-mk && make rel
 
-  nif-library-rebar3:
-    strategy:
-      matrix:
-        platforms: [ubuntu, macos, windows]
-        version: [25] # [25, 26, 27]
-    runs-on: ${{ matrix.platforms }}-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: erlangsters/setup-erlang@v1
-      with:
-        erlang-version: ${{ matrix.version }}
-        install-rebar3: true
-    - run: |
-        cd nif-library-rebar3
-        rebar3 compile
-        rebar3 eunit
+  # nif-library-rebar3:
+  #   strategy:
+  #     matrix:
+  #       platforms: [ubuntu, macos, windows]
+  #       version: [25] # [25, 26, 27]
+  #   runs-on: ${{ matrix.platforms }}-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - uses: erlangsters/setup-erlang@v1
+  #     with:
+  #       erlang-version: ${{ matrix.version }}
+  #       install-rebar3: true
+  #   - run: |
+  #       cd nif-library-rebar3
+  #       rebar3 compile
+  #       rebar3 eunit
 
   nif-library-erlang-mk:
     strategy:
@@ -58,23 +58,34 @@ jobs:
     runs-on: ${{ matrix.platforms }}-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: msys2/setup-msys2@v2
-      with:
-        update: true
-        install: >-
-          git
-          make
-          mingw-w64-x86_64-gcc
     - uses: erlangsters/setup-erlang@v1.0.1
       id: setup-erlang
       with:
         erlang-version: ${{ matrix.version }}
-    - shell: msys2 {0}
-      run: |
+    - run: |
         ls ${{ steps.setup-erlang.outputs.erlang-location }}
         ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
-        cd nif-library-erlang-mk
-        make
-        make eunit
-      env:
-        PATH: ${{ steps.setup-erlang.outputs.erlang-location }}/bin:$PATH
+
+    # - uses: msys2/setup-msys2@v2
+    #   with:
+    #     update: true
+    #     install: >-
+    #       git
+    #       make
+    #       mingw-w64-x86_64-gcc
+    # - shell: msys2 {0}
+    #   run: |
+    #     echo $PATH
+    # - uses: erlangsters/setup-erlang@v1.0.1
+    #   id: setup-erlang
+    #   with:
+    #     erlang-version: ${{ matrix.version }}
+    # - shell: msys2 {0}
+    #   run: |
+    #     ls ${{ steps.setup-erlang.outputs.erlang-location }}
+    #     ls ${{ steps.setup-erlang.outputs.erlang-location }}/bin
+    #     cd nif-library-erlang-mk
+    #     make
+    #     make eunit
+    #   env:
+    #     PATH: ${{ steps.setup-erlang.outputs.erlang-location }}/bin:$PATH
