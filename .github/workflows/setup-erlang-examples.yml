@@ -32,3 +32,19 @@ jobs:
   #     with:
   #       erlang-version: ${{ matrix.version }}
   #   - run: cd otp-release-erlang-mk && make rel
+
+  nif-library-erlang-mk:
+    strategy:
+      matrix:
+        platforms: [ubuntu, macos, windows]
+        version: [25, 26, 27]
+    runs-on: ${{ matrix.platforms }}-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: erlangsters/setup-erlang@v1
+      with:
+        erlang-version: ${{ matrix.version }}
+    - run: |
+        cd nif-library-erlang-mk
+        make
+        make eunit
